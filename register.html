@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | The Marketplace</title>
+  <meta name="description" content="Create a new account on The Marketplace." />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface-2: #E2E8F0;
+      --primary: #0F766E;
+      --primary-hover: #14B8A6;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #1F2937;
+      --text-muted: #64748B;
+      --muted: var(--text-muted);
+      --border: #E2E8F0;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --muted: var(--text-muted);
+      --border: #475569;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .nav-links a:nth-last-child(-n+2) {
+      font-size: 0.95rem;
+      padding: 4px 4px;
+    }
+
+    .nav-links a:nth-last-child(2),
+    .nav-links a:last-child {
+      padding: 4px 4px;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      background: var(--surface);
+    }
+
+    .page-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 72px 32px 40px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-copy h1 {
+      margin: 0 0 18px;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      line-height: 1.02;
+    }
+
+    .hero-copy p {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .auth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: var(--shadow);
+    }
+
+    .auth-card h2 {
+      margin: 0 0 18px;
+      font-size: 1.6rem;
+    }
+
+    .auth-card label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .auth-card input,
+    .auth-card select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 22px;
+      font-size: 1rem;
+      background: #fff;
+      outline: none;
+    }
+
+    .auth-card button {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 16px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .bottom-note {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="index.html">The Marketplace</a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="sell.html">Sell</a>
+      <a href="post-free-ad.html">Post free ad</a>
+      <a href="sign-in.html">Sign in</a>
+      <a href="register.html">Register</a>
+    </nav>
+    <button class="theme-toggle" type="button">🌙 Dark</button>
+  </header>
+
+  <main class="page-container">
+    <section class="hero">
+      <div class="hero-copy">
+        <p style="color: var(--primary); font-weight: 700; margin: 0 0 14px;">Join The Marketplace</p>
+        <h1>Create your account and start posting ads.</h1>
+        <p>Register now to manage your listings, save favorite searches, and message buyers directly from your account.</p>
+      </div>
+      <div class="auth-card">
+        <h2>Create an account</h2>
+        <label for="fullname">Full name</label>
+        <input id="fullname" name="fullname" type="text" placeholder="Your full name" />
+
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Choose a strong password" />
+
+        <label for="confirm-password">Confirm password</label>
+        <input id="confirm-password" name="confirm-password" type="password" placeholder="Re-enter your password" />
+
+        <label for="account-type">Account type</label>
+        <select id="account-type" name="account-type">
+          <option>Buyer</option>
+          <option>Seller</option>
+          <option>Both</option>
+        </select>
+
+        <button type="button">Create account</button>
+
+        <p class="bottom-note">Already have an account? <a href="sign-in.html" style="color: var(--primary); font-weight: 600;">Sign in</a>.</p>
+      </div>
+    </section>
+  </main>
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const button = document.querySelector('.theme-toggle');
+      const savedTheme = localStorage.getItem('theme');
+      const preferred = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const setTheme = theme => {
+        root.dataset.theme = theme;
+        localStorage.setItem('theme', theme);
+        if (!button) return;
+        button.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+        button.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+      };
+      setTheme(preferred);
+      if (button) {
+        button.addEventListener('click', function() {
+          setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,748 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Marketplace</title>
+  <meta name="description" content="The Marketplace is a modern classifieds website for buying and selling local products and services." />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface-2: #E2E8F0;
+      --primary: #0F766E;
+      --primary-hover: #14B8A6;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #1F2937;
+      --text-muted: #64748B;
+      --muted: var(--text-muted);
+      --border: #E2E8F0;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --danger: #EF4444;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --muted: var(--text-muted);
+      --border: #475569;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --danger: #EF4444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .nav-links a:nth-last-child(-n+2) {
+      font-size: 0.95rem;
+      padding: 4px 4px;
+    }
+
+    .nav-links a:nth-last-child(2),
+    .nav-links a:last-child {
+      padding: 4px 4px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-actions .button,
+    .hero .button {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-actions .button.primary,
+    .hero .button.primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 12px 30px rgba(15, 99, 255, 0.18);
+    }
+
+    .nav-actions .button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .nav-actions .button:hover,
+    .hero .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      background: var(--surface);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+      gap: 32px;
+      align-items: center;
+      padding: 80px 32px 40px;
+    }
+
+    .hero-copy {
+      max-width: 620px;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2.75rem, 4vw, 4rem);
+      margin: 0 0 18px;
+      line-height: 0.95;
+    }
+
+    .hero-copy p {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .search-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .search-panel label {
+      display: block;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .search-panel input,
+    .search-panel select {
+      width: 100%;
+      padding: 16px 18px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 18px;
+      outline: none;
+    }
+
+    .search-panel button {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+    }
+
+    .categories-grid,
+    .listings-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .category-card,
+    .listing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.04);
+    }
+
+    .category-card span,
+    .listing-card span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+    }
+
+    .category-card h3,
+    .listing-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    .category-card p,
+    .listing-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .featured-header,
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.75rem;
+    }
+
+    .section-header a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .listing-card {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 18px;
+      align-items: center;
+    }
+
+    .listing-card img {
+      width: 120px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+
+    .listing-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .listing-info .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .listing-info .price {
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #d1fae5;
+      color: #047857;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .split-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .feature-card h3 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    footer {
+      padding: 40px 32px;
+      color: var(--muted);
+      display: grid;
+      gap: 26px;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .footer-grid h4 {
+      margin-bottom: 14px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .footer-grid a {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 420px;
+      border-radius: 32px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(15,99,255,0.15) 0%, rgba(255,255,255,0.95) 100%);
+    }
+
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(15,99,255,0.26), transparent 40%),
+                  radial-gradient(circle at bottom right, rgba(79,70,229,0.16), transparent 30%);
+    }
+
+    .hero-box {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 420px);
+      padding: 30px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(243,244,246,0.9);
+      box-shadow: 0 40px 80px rgba(15, 23, 42, 0.08);
+    }
+
+    .hero-box h3 {
+      margin: 0 0 12px;
+      color: var(--primary);
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-box p {
+      margin: 0 0 20px;
+      color: var(--muted);
+    }
+
+    .hero-box .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .stat {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .listing-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual,
+      .hero-box {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 720px) {
+      header,
+      .hero,
+      footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .nav-links,
+      .nav-actions {
+        justify-content: center;
+      }
+
+      .split-grid,
+      .footer-grid,
+      .categories-grid,
+      .listings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy h1 {
+        font-size: 2.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="#">The Marketplace</a>
+    <nav class="nav-links">
+      <a href="#categories">Categories</a>
+      <a href="#featured">Featured</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="buyer-signin.html">Buy</a>
+      <a href="seller-signin.html" style="color: var(--primary); font-weight: 700;">Sell</a>
+      <a href="register.html">Register</a>
+      <a href="admin-login.html" style="color: var(--danger); font-weight: 700;">Admin</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="button secondary" href="sell.html">Sell</a>
+      <a class="button primary" href="post-free-ad.html">Post free ad</a>
+      <button class="theme-toggle button" type="button">🌙 Dark</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p style="color: var(--primary); font-weight: 700; margin-bottom: 14px;">Local classifieds made easy</p>
+        <h1>Buy, sell, and discover items from people near you.</h1>
+        <p>Search thousands of listings across categories like electronics, cars, home appliances, and services. Connect directly with sellers and find great deals in your neighborhood.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 28px;">
+          <a class="button primary" href="#featured">Browse now</a>
+          <a class="button secondary" href="#categories">Shop categories</a>
+        </div>
+
+        <div class="search-panel">
+          <label for="search-query">Find anything</label>
+          <input id="search-query" type="text" placeholder="Search by item, brand, or model" />
+          <label for="search-location">Location</label>
+          <select id="search-location">
+            <option>All locations</option>
+            <option>Abia</option>
+            <option>Adamawa</option>
+            <option>Akwa Ibom</option>
+            <option>Anambra</option>
+            <option>Bauchi</option>
+            <option>Bayelsa</option>
+            <option>Benue</option>
+            <option>Borno</option>
+            <option>Cross River</option>
+            <option>Delta</option>
+            <option>Ebonyi</option>
+            <option>Edo</option>
+            <option>Ekiti</option>
+            <option>Enugu</option>
+            <option>Gombe</option>
+            <option>Imo</option>
+            <option>Jigawa</option>
+            <option>Kaduna</option>
+            <option>Kano</option>
+            <option>Katsina</option>
+            <option>Kebbi</option>
+            <option>Kogi</option>
+            <option>Kwara</option>
+            <option>Lagos</option>
+            <option>Nasarawa</option>
+            <option>Niger</option>
+            <option>Ogun</option>
+            <option>Ondo</option>
+            <option>Osun</option>
+            <option>Oyo</option>
+            <option>Plateau</option>
+            <option>Rivers</option>
+            <option>Sokoto</option>
+            <option>Taraba</option>
+            <option>Yobe</option>
+            <option>Zamfara</option>
+            <option>FCT - Abuja</option>
+          </select>
+          <button type="button">Search listings</button>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-box">
+          <h3>Fast searches</h3>
+          <p>Find nearby deals quickly with smart filters and fresh local offers.</p>
+          <div class="stats">
+            <div class="stat">
+              <strong>2.1K+</strong>
+              <span>New ads today</span>
+            </div>
+            <div class="stat">
+              <strong>1.8K</strong>
+              <span>Trusted sellers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="categories" style="padding: 0 32px 40px;">
+      <div class="section-header">
+        <div>
+          <p style="color: var(--muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.16em; margin: 0 0 8px;">Popular categories</p>
+          <h2>Shop by category</h2>
+        </div>
+        <a href="#featured">View all listings</a>
+      </div>
+      <div class="categories-grid" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+        <article class="category-card">
+          <span>📱</span>
+          <h3>Electronics</h3>
+          <p>Phones, laptops, cameras, and gaming gear.</p>
+        </article>
+        <article class="category-card">
+          <span>🚗</span>
+          <h3>Vehicles</h3>
+          <p>Cars, bikes, trucks, and auto accessories.</p>
+        </article>
+        <article class="category-card">
+          <span>🏠</span>
+          <h3>Home & Garden</h3>
+          <p>Furniture, appliances, tools, and home decor.</p>
+        </article>
+        <article class="category-card">
+          <span>🍔</span>
+          <h3>Food</h3>
+          <p>Groceries, meals, catering, and food delivery services.</p>
+        </article>
+        <article class="category-card">
+          <span>🛠️</span>
+          <h3>Services</h3>
+          <p>Repairs, cleaning, tutoring, and more.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="featured" style="padding: 0 32px 40px;">
+      <div class="featured-header">
+        <div>
+          <p style="color: var(--muted); margin: 0 0 8px;">Featured listings</p>
+          <h2>Top deals in your area</h2>
+        </div>
+        <a href="post-free-ad.html">Post your ad</a>
+      </div>
+      <div class="listings-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+        <article class="listing-card">
+          <img src="https://images.unsplash.com/photo-1512499617640-c2f999ab1f02?auto=format&fit=crop&w=400&q=80" alt="Smartphone listings" />
+          <div class="listing-info">
+            <div class="meta"><span>Electronics</span><span>3 km away</span></div>
+            <h3>Like-new smartphone with accessories</h3>
+            <p class="price">₦220</p>
+            <p>Includes charger, case, and screen protector. Ready for pickup today.</p>
+          </div>
+        </article>
+
+        <article class="listing-card">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=400&q=80" alt="Used car listing" />
+          <div class="listing-info">
+            <div class="meta"><span>Vehicles</span><span>5 km away</span></div>
+            <h3>2016 Sedan in excellent condition</h3>
+            <p class="price">₦11,900</p>
+            <p>One owner, full service history, low mileage, and smooth ride.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section style="padding: 0 32px 40px;">
+      <div class="split-grid">
+        <article class="feature-card">
+          <span style="font-size: 1.8rem;">🛒</span>
+          <h3>Browse categories</h3>
+          <p>Explore local listings for every need, from household items to jobs and electronics.</p>
+        </article>
+        <article class="feature-card">
+          <span style="font-size: 1.8rem;">📩</span>
+          <h3>Contact sellers fast</h3>
+          <p>Send messages directly and negotiate deals with sellers in your neighborhood.</p>
+        </article>
+        <article class="feature-card">
+          <span style="font-size: 1.8rem;">💰</span>
+          <h3>Post ads for free</h3>
+          <p>Create a listing in minutes and reach buyers instantly with an easy ad flow.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="how-it-works" style="padding: 0 32px 40px;">
+      <div class="section-header">
+        <div>
+          <p style="color: var(--muted); margin: 0 0 8px;">How it works</p>
+          <h2>Buy and sell in three simple steps</h2>
+        </div>
+      </div>
+      <div class="categories-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+        <article class="category-card">
+          <span>1</span>
+          <h3>Find a listing</h3>
+          <p>Search listings by category, location, or keywords to compare offers.</p>
+        </article>
+        <article class="category-card">
+          <span>2</span>
+          <h3>Message the seller</h3>
+          <p>Ask questions, agree on details, and arrange payment or pickup safely.</p>
+        </article>
+        <article class="category-card">
+          <span>3</span>
+          <h3>Complete the deal</h3>
+          <p>Pick up your item or service locally and leave feedback for the seller.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h4>The Marketplace</h4>
+        <p>Local classifieds for buying and selling goods, vehicles, services, and more.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="#categories">Categories</a>
+        <a href="#featured">Featured</a>
+        <a href="#how-it-works">How it works</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="#">Help center</a>
+        <a href="#">Safety tips</a>
+        <a href="#">Contact us</a>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <a href="#">Facebook</a>
+        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <p style="margin: 0; padding-top: 18px; border-top: 1px solid var(--border); color: var(--muted);">© 2026 The Marketplace. All rights reserved.</p>
+  </footer>
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const button = document.querySelector('.theme-toggle');
+      const savedTheme = localStorage.getItem('theme');
+      const preferred = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const setTheme = theme => {
+        root.dataset.theme = theme;
+        localStorage.setItem('theme', theme);
+        if (!button) return;
+        button.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+        button.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+      };
+      setTheme(preferred);
+      if (button) {
+        button.addEventListener('click', function() {
+          setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

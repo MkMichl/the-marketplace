@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seller Dashboard | The Marketplace</title>
+  <meta name="description" content="Manage your listings and sales." />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface-2: #E2E8F0;
+      --primary: #0F766E;
+      --primary-hover: #14B8A6;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #1F2937;
+      --text-muted: #64748B;
+      --muted: var(--text-muted);
+      --border: #E2E8F0;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --seller: #10B981;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --info: #3B82F6;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --muted: var(--text-muted);
+      --border: #475569;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --seller: #10B981;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --info: #3B82F6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .logo-badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--seller);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      border-left: 1px solid var(--border);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--seller);
+    }
+
+    .logout-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background: #DC2626;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    .page-header {
+      margin-bottom: 40px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 2.2rem;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .stat-trend {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--seller);
+    }
+
+    .stat-trend.down {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .card h2 {
+      margin: 0 0 20px;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-action {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      background: var(--seller);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .card-action:hover {
+      background: #059669;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: var(--surface-2);
+    }
+
+    th {
+      text-align: left;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    tr:hover {
+      background: var(--primary-soft);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .badge.active {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .badge.sold {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--info);
+    }
+
+    .badge.pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--surface-2);
+    }
+
+    .action-btn.delete:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .activity-text {
+      flex: 1;
+    }
+
+    .activity-text p {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .activity-time {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html">The Marketplace <span class="logo-badge">SELLER</span></a>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button">🌙 Dark</button>
+        <div class="user-info">
+          <div class="user-avatar" id="user-avatar">S</div>
+          <div>
+            <div style="font-weight: 600;" id="user-name">Seller</div>
+            <div style="font-size: 0.85rem; color: var(--muted);" id="user-email">seller@example.com</div>
+          </div>
+          <button class="logout-btn" id="logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <h1>Seller Dashboard</h1>
+      <p>Manage your listings, track sales, and grow your business.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Active Listings</div>
+        <div class="stat-value">8</div>
+        <span class="stat-trend">📦 Ready to sell</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Sales</div>
+        <div class="stat-value">42</div>
+        <span class="stat-trend">↑ 6 this month</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value">$4,850</div>
+        <span class="stat-trend">↑ 22% this month</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Seller Rating</div>
+        <div class="stat-value">4.9★</div>
+        <span class="stat-trend">👍 156 reviews</span>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h2>
+          My Listings
+          <a href="post-free-ad.html" class="card-action">+ New Listing</a>
+        </h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Views</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Vintage Leather Sofa</td>
+                <td>$350</td>
+                <td><span class="badge active">Active</span></td>
+                <td>42</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Mountain Bike</td>
+                <td>$450</td>
+                <td><span class="badge sold">Sold</span></td>
+                <td>128</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn">Relist</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Laptop (Used)</td>
+                <td>$600</td>
+                <td><span class="badge sold">Sold</span></td>
+                <td>256</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn">Relist</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Garden Tools Set</td>
+                <td>$80</td>
+                <td><span class="badge active">Active</span></td>
+                <td>18</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Recent Activity</h2>
+        <div class="activity-item">
+          <div class="activity-icon">💰</div>
+          <div class="activity-text">
+            <p>Sale completed</p>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">📝</div>
+          <div class="activity-text">
+            <p>New inquiry received</p>
+            <div class="activity-time">4 hours ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">⭐</div>
+          <div class="activity-text">
+            <p>5-star review received</p>
+            <div class="activity-time">1 day ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon">📦</div>
+          <div class="activity-text">
+            <p>Item shipped</p>
+            <div class="activity-time">2 days ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Sales Performance</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Buyer</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jane Doe</td>
+              <td>Mountain Bike</td>
+              <td>$450</td>
+              <td>May 30, 2026</td>
+              <td><span class="badge sold">Delivered</span></td>
+            </tr>
+            <tr>
+              <td>John Smith</td>
+              <td>Laptop (Used)</td>
+              <td>$600</td>
+              <td>May 25, 2026</td>
+              <td><span class="badge sold">Delivered</span></td>
+            </tr>
+            <tr>
+              <td>Sarah Johnson</td>
+              <td>Office Chair</td>
+              <td>$120</td>
+              <td>May 20, 2026</td>
+              <td><span class="badge sold">Delivered</span></td>
+            </tr>
+            <tr>
+              <td>Mike Brown</td>
+              <td>Vintage Sofa</td>
+              <td>$350</td>
+              <td>May 15, 2026</td>
+              <td><span class="badge sold">Delivered</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function checkAuth() {
+      if (localStorage.getItem('user-logged-in') !== 'true' || localStorage.getItem('user-role') !== 'seller') {
+        window.location.href = 'seller-signin.html';
+        return;
+      }
+
+      const userName = localStorage.getItem('user-name') || 'Seller';
+      const userEmail = localStorage.getItem('user-email') || 'seller@example.com';
+      document.getElementById('user-name').textContent = userName;
+      document.getElementById('user-email').textContent = userEmail;
+      document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
+    }
+
+    const themeToggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      themeToggle.textContent = '☀️ Light';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('user-logged-in');
+      localStorage.removeItem('user-role');
+      localStorage.removeItem('user-name');
+      localStorage.removeItem('user-email');
+      window.location.href = 'seller-signin.html';
+    });
+
+    document.querySelectorAll('.action-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const action = btn.textContent.trim();
+        const row = btn.closest('tr');
+        if (action === 'Delete') {
+          alert(`Deleted: ${row.cells[0].textContent}`);
+          row.remove();
+        } else if (action === 'Relist') {
+          alert(`Relisted: ${row.cells[0].textContent}`);
+        } else {
+          alert(`${action}: ${row.cells[0].textContent}`);
+        }
+      });
+    });
+
+    checkAuth();
+  </script>
+</body>
+</html>

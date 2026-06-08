@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buyer Sign In | The Marketplace</title>
+  <meta name="description" content="Sign in as a buyer on The Marketplace." />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface-2: #E2E8F0;
+      --primary: #0F766E;
+      --primary-hover: #14B8A6;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #1F2937;
+      --text-muted: #64748B;
+      --muted: var(--text-muted);
+      --border: #E2E8F0;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --buyer: #3B82F6;
+      --seller: #10B981;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --muted: var(--text-muted);
+      --border: #475569;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --buyer: #3B82F6;
+      --seller: #10B981;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      background: var(--surface);
+    }
+
+    .login-container {
+      min-height: calc(100vh - 80px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 700px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .role-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .role-card:hover {
+      border-color: var(--buyer);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .role-card.seller:hover {
+      border-color: var(--seller);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+    }
+
+    .role-card.active {
+      border-color: var(--buyer);
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .role-card.seller.active {
+      border-color: var(--seller);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .role-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .role-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+      color: var(--text);
+    }
+
+    .role-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .auth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 48px;
+      box-shadow: var(--shadow);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .auth-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--buyer);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+    }
+
+    .auth-badge.seller {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--seller);
+    }
+
+    .auth-card h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    .auth-card p {
+      margin: 0 0 32px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .auth-card label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .auth-card input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .auth-card input:focus {
+      border-color: var(--primary);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      margin: 0;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .auth-card button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--buyer);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .auth-card button.seller {
+      background: var(--seller);
+    }
+
+    .auth-card button:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    .auth-card button:active {
+      transform: translateY(0);
+    }
+
+    .error-message {
+      color: #EF4444;
+      font-size: 0.9rem;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .back-button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 16px;
+      width: 100%;
+      transition: background 0.2s ease;
+    }
+
+    .back-button:hover {
+      background: var(--surface-2);
+    }
+
+    .bottom-links {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .bottom-links a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .role-selector {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-card {
+        padding: 32px 24px;
+      }
+
+      .auth-card h1 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="index.html">The Marketplace</a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="seller-signin.html">Seller Login</a>
+      <a href="admin-login.html">Admin</a>
+    </nav>
+    <button class="theme-toggle" type="button">🌙 Dark</button>
+  </header>
+
+  <main class="login-container">
+    <div class="auth-card">
+      <div class="auth-badge">🛍️ Buyer Portal</div>
+      <h1>Buyer Login</h1>
+      <p>Access your purchases, saved items, and messages.</p>
+
+      <form id="signin-form">
+        <div class="form-group">
+          <label for="signin-email">Email or Phone Number</label>
+          <input
+            type="text"
+            id="signin-email"
+            name="email"
+            placeholder="you@example.com or (123) 456-7890"
+            required
+          />
+          <div class="error-message" id="email-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="signin-password">Password</label>
+          <input
+            type="password"
+            id="signin-password"
+            name="password"
+            placeholder="••••••••"
+            required
+          />
+          <div class="error-message" id="password-error"></div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="remember" name="remember" />
+          <label for="remember">Remember me</label>
+        </div>
+
+        <button type="submit" id="signin-button">Sign In as Buyer</button>
+
+        <a href="seller-signin.html" class="back-button">📦 Switch to Seller Login</a>
+
+        <div class="bottom-links">
+          <p>Don't have an account? <a href="register.html">Create one</a></p>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // Theme toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      themeToggle.textContent = '☀️ Light';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+
+    // Helper functions
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValidPhone = (phone) => /^[\d\s\-\(\)\+]{10,}$/.test(phone.replace(/\s/g, '')) && /\d/.test(phone);
+
+    // Form submission
+    document.getElementById('signin-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      document.getElementById('email-error').classList.remove('show');
+      document.getElementById('password-error').classList.remove('show');
+
+      const email = document.getElementById('signin-email').value.trim();
+      const password = document.getElementById('signin-password').value.trim();
+
+      let hasError = false;
+
+      if (!isValidEmail(email) && !isValidPhone(email)) {
+        document.getElementById('email-error').textContent = 'Please enter a valid email or phone number';
+        document.getElementById('email-error').classList.add('show');
+        hasError = true;
+      }
+
+      if (password.length < 6) {
+        document.getElementById('password-error').textContent = 'Password must be at least 6 characters';
+        document.getElementById('password-error').classList.add('show');
+        hasError = true;
+      }
+
+      if (!hasError) {
+        localStorage.setItem('user-logged-in', 'true');
+        localStorage.setItem('user-role', 'buyer');
+        localStorage.setItem('user-email', email);
+        const userName = isValidEmail(email) 
+          ? email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1)
+          : 'User';
+        localStorage.setItem('user-name', userName);
+
+        window.location.href = 'buyer-dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

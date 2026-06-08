@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard | The Marketplace</title>
+  <meta name="description" content="Manage your listings, messages, and account on The Marketplace." />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface-2: #E2E8F0;
+      --primary: #0F766E;
+      --primary-hover: #14B8A6;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #1F2937;
+      --text-muted: #64748B;
+      --muted: var(--text-muted);
+      --border: #E2E8F0;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --info: #3B82F6;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --muted: var(--text-muted);
+      --border: #475569;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --info: #3B82F6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      border-left: 1px solid var(--border);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .logout-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background: #DC2626;
+    }
+
+    .sidebar {
+      display: none;
+      width: 280px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      position: fixed;
+      left: 0;
+      top: 80px;
+      height: calc(100vh - 80px);
+      overflow-y: auto;
+    }
+
+    .sidebar.active {
+      display: block;
+    }
+
+    .sidebar-item {
+      padding: 12px 24px;
+      color: var(--muted);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar-item:hover,
+    .sidebar-item.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    .page-header {
+      margin-bottom: 40px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 2.2rem;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .stat-trend {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .stat-trend.up {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .stat-trend.down {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .card h2 {
+      margin: 0 0 20px;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header-action {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .card-header-action:hover {
+      background: var(--primary-hover);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: var(--surface-2);
+    }
+
+    th {
+      text-align: left;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    tr:hover {
+      background: var(--primary-soft);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .badge.active {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .badge.inactive {
+      background: rgba(107, 114, 128, 0.1);
+      color: var(--muted);
+    }
+
+    .badge.pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .badge.sold {
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--info);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--surface-2);
+    }
+
+    .action-btn.delete:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .message-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .message-item:last-child {
+      border-bottom: none;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .message-content {
+      flex: 1;
+    }
+
+    .message-content p {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .message-preview {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    .message-time {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .quick-action {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .quick-action a {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .quick-action a:hover {
+      background: var(--primary-hover);
+    }
+
+    .quick-action a.secondary {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .quick-action a.secondary:hover {
+      background: var(--border);
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
+        margin-left: 0;
+      }
+
+      .user-info {
+        border-left: none;
+        border-top: 1px solid var(--border);
+        padding: 12px 0 0;
+      }
+
+      table {
+        font-size: 0.85rem;
+      }
+
+      th, td {
+        padding: 8px;
+      }
+
+      .sidebar {
+        width: 100%;
+        top: 0;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html">The Marketplace</a>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button">🌙 Dark</button>
+        <div class="user-info">
+          <div class="user-avatar" id="user-avatar">J</div>
+          <div>
+            <div style="font-weight: 600;" id="user-name">John Smith</div>
+            <div style="font-size: 0.85rem; color: var(--muted);" id="user-email">john@example.com</div>
+          </div>
+          <button class="logout-btn" id="logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>My Dashboard</h1>
+      <p>Manage your listings, messages, and account settings.</p>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Active Listings</div>
+        <div class="stat-value">5</div>
+        <span class="stat-trend up">↑ 2 new this week</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Views</div>
+        <div class="stat-value">247</div>
+        <span class="stat-trend up">↑ 18% this week</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Messages</div>
+        <div class="stat-value">12</div>
+        <span class="stat-trend down">3 unanswered</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rating</div>
+        <div class="stat-value">4.8★</div>
+        <span class="stat-trend up">↑ 24 reviews</span>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- My Listings -->
+      <div class="card">
+        <h2>
+          My Listings
+          <a href="post-free-ad.html" class="card-header-action">+ New Listing</a>
+        </h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Views</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Vintage Leather Sofa</td>
+                <td>$350</td>
+                <td><span class="badge active">Active</span></td>
+                <td>42</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Mountain Bike</td>
+                <td>$450</td>
+                <td><span class="badge active">Active</span></td>
+                <td>68</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Laptop (Used)</td>
+                <td>$600</td>
+                <td><span class="badge sold">Sold</span></td>
+                <td>156</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn delete">Archive</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Garden Tools Set</td>
+                <td>$80</td>
+                <td><span class="badge active">Active</span></td>
+                <td>23</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Office Chair</td>
+                <td>$120</td>
+                <td><span class="badge inactive">Inactive</span></td>
+                <td>15</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">Reactivate</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Messages -->
+      <div class="card">
+        <h2>Recent Messages</h2>
+        <div class="message-item">
+          <div class="message-avatar">SM</div>
+          <div class="message-content">
+            <p>Sarah Miller</p>
+            <div class="message-preview">Is this still available?</div>
+          </div>
+          <div class="message-time">2h ago</div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">MB</div>
+          <div class="message-content">
+            <p>Mike Brown</p>
+            <div class="message-preview">Can you go lower on price?</div>
+          </div>
+          <div class="message-time">5h ago</div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">EW</div>
+          <div class="message-content">
+            <p>Emma Wilson</p>
+            <div class="message-preview">Thanks for the quick delivery!</div>
+          </div>
+          <div class="message-time">1d ago</div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">TC</div>
+          <div class="message-content">
+            <p>Tom Clark</p>
+            <div class="message-preview">When are you available to meet?</div>
+          </div>
+          <div class="message-time">2d ago</div>
+        </div>
+        <div class="message-item">
+          <div class="message-avatar">RC</div>
+          <div class="message-content">
+            <p>Rachel Carter</p>
+            <div class="message-preview">Great item, very happy with it</div>
+          </div>
+          <div class="message-time">3d ago</div>
+        </div>
+        <div class="quick-action" style="margin-top: 16px;">
+          <a href="#messages" class="secondary">View All Messages</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Activity -->
+    <div class="card" style="margin-top: 24px;">
+      <h2>Account Activity</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Activity</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Posted listing: Vintage Leather Sofa</td>
+              <td>Today at 10:30 AM</td>
+              <td><span class="badge active">Success</span></td>
+            </tr>
+            <tr>
+              <td>Received message from Sarah Miller</td>
+              <td>Today at 2:15 PM</td>
+              <td><span class="badge active">Success</span></td>
+            </tr>
+            <tr>
+              <td>Listing "Laptop (Used)" marked as sold</td>
+              <td>Yesterday at 4:45 PM</td>
+              <td><span class="badge active">Success</span></td>
+            </tr>
+            <tr>
+              <td>Profile updated</td>
+              <td>3 days ago</td>
+              <td><span class="badge active">Success</span></td>
+            </tr>
+            <tr>
+              <td>Account login from new device</td>
+              <td>1 week ago</td>
+              <td><span class="badge pending">Verified</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div style="margin-top: 24px; display: flex; gap: 16px; flex-wrap: wrap;">
+      <a href="post-free-ad.html" class="quick-action" style="margin: 0; flex: 0 1 auto;">
+        <button style="flex: 1; padding: 14px 32px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s ease;">+ Post New Listing</button>
+      </a>
+      <a href="#profile" style="flex: 0 1 auto;">
+        <button style="padding: 14px 32px; background: var(--surface-2); color: var(--text); border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s ease;">Edit Profile</button>
+      </a>
+      <a href="#settings" style="flex: 0 1 auto;">
+        <button style="padding: 14px 32px; background: var(--surface-2); color: var(--text); border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s ease;">Settings</button>
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // Check if user is logged in
+    function checkAuth() {
+      if (localStorage.getItem('user-logged-in') !== 'true') {
+        window.location.href = 'sign-in.html';
+        return;
+      }
+
+      // Display user info
+      const userName = localStorage.getItem('user-name') || 'John Smith';
+      const userEmail = localStorage.getItem('user-email') || 'john@example.com';
+      document.getElementById('user-name').textContent = userName;
+      document.getElementById('user-email').textContent = userEmail;
+      document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
+    }
+
+    // Theme toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      themeToggle.textContent = '☀️ Light';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('user-logged-in');
+      localStorage.removeItem('user-name');
+      localStorage.removeItem('user-email');
+      window.location.href = 'sign-in.html';
+    });
+
+    // Button interactions
+    document.querySelectorAll('.action-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const action = btn.textContent.trim();
+        const row = btn.closest('tr');
+        if (action === 'Delete' || action === 'Archive' || action === 'Remove') {
+          alert(`${action}: ${row.cells[0].textContent}`);
+          row.remove();
+        } else if (action === 'Reactivate') {
+          alert(`Reactivated: ${row.cells[0].textContent}`);
+          row.querySelector('.badge').textContent = 'Active';
+          row.querySelector('.badge').className = 'badge active';
+        } else {
+          alert(`${action} action on: ${row.cells[0].textContent}`);
+        }
+      });
+    });
+
+    // Message click handler
+    document.querySelectorAll('.message-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        alert('Opening message conversation...');
+      });
+    });
+
+    // Initialize
+    checkAuth();
+  </script>
+</body>
+</html>

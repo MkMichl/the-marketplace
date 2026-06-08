@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buyer Dashboard | The Marketplace</title>
+  <meta name="description" content="Manage your purchases and saved items." />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface-2: #E2E8F0;
+      --primary: #0F766E;
+      --primary-hover: #14B8A6;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #1F2937;
+      --text-muted: #64748B;
+      --muted: var(--text-muted);
+      --border: #E2E8F0;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --buyer: #3B82F6;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --muted: var(--text-muted);
+      --border: #475569;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --buyer: #3B82F6;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .logo-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--buyer);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      border-left: 1px solid var(--border);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(59, 130, 246, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--buyer);
+    }
+
+    .logout-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background: #DC2626;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    .page-header {
+      margin-bottom: 40px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 2.2rem;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .stat-trend {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--buyer);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .card h2 {
+      margin: 0 0 20px;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-action {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      background: var(--buyer);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .card-action:hover {
+      background: #2563EB;
+    }
+
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .item {
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      background: var(--surface-2);
+      border-radius: 8px;
+      align-items: center;
+    }
+
+    .item-thumb {
+      width: 60px;
+      height: 60px;
+      background: var(--primary-soft);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .item-price {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .item-action {
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background 0.2s ease;
+    }
+
+    .item-action:hover {
+      background: var(--surface-2);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: var(--surface-2);
+    }
+
+    th {
+      text-align: left;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .badge.completed {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .badge.pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .badge.saved {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--buyer);
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html">The Marketplace <span class="logo-badge">BUYER</span></a>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button">🌙 Dark</button>
+        <div class="user-info">
+          <div class="user-avatar" id="user-avatar">B</div>
+          <div>
+            <div style="font-weight: 600;" id="user-name">Buyer</div>
+            <div style="font-size: 0.85rem; color: var(--muted);" id="user-email">buyer@example.com</div>
+          </div>
+          <button class="logout-btn" id="logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <h1>My Purchases</h1>
+      <p>Track your orders, saved items, and communications with sellers.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Purchases</div>
+        <div class="stat-value">12</div>
+        <span class="stat-trend">💰 $2,450 spent</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Saved Items</div>
+        <div class="stat-value">24</div>
+        <span class="stat-trend">🛍️ Ready to buy</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Offers</div>
+        <div class="stat-value">3</div>
+        <span class="stat-trend">⏳ Awaiting response</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rating</div>
+        <div class="stat-value">4.9★</div>
+        <span class="stat-trend">👍 28 reviews</span>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h2>
+          Recent Purchases
+          <a href="index.html" class="card-action">Browse More</a>
+        </h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Vintage Leather Sofa</td>
+                <td>$350</td>
+                <td>Jun 1, 2026</td>
+                <td><span class="badge completed">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Mountain Bike</td>
+                <td>$450</td>
+                <td>May 28, 2026</td>
+                <td><span class="badge completed">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Laptop (Used)</td>
+                <td>$600</td>
+                <td>May 25, 2026</td>
+                <td><span class="badge completed">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Garden Tools Set</td>
+                <td>$80</td>
+                <td>May 20, 2026</td>
+                <td><span class="badge pending">In Transit</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Messages</h2>
+        <div class="item-list">
+          <div class="item">
+            <div class="item-thumb">👤</div>
+            <div class="item-info">
+              <div class="item-title">John Smith</div>
+              <div class="item-price">Regarding: Mountain Bike</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-thumb">👤</div>
+            <div class="item-info">
+              <div class="item-title">Sarah Johnson</div>
+              <div class="item-price">Regarding: Laptop</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-thumb">👤</div>
+            <div class="item-info">
+              <div class="item-title">Mike Davis</div>
+              <div class="item-price">Regarding: Sofa</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Saved Items</h2>
+      <div class="item-list">
+        <div class="item">
+          <div class="item-thumb">📱</div>
+          <div class="item-info">
+            <div class="item-title">iPhone 14 Pro Max</div>
+            <div class="item-price">$900 • Electronics • 2 hours ago</div>
+          </div>
+          <div class="item-actions">
+            <button class="item-action">View</button>
+            <button class="item-action">Remove</button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-thumb">🪑</div>
+          <div class="item-info">
+            <div class="item-title">Office Chair (New)</div>
+            <div class="item-price">$150 • Furniture • 1 day ago</div>
+          </div>
+          <div class="item-actions">
+            <button class="item-action">View</button>
+            <button class="item-action">Remove</button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-thumb">⌚</div>
+          <div class="item-info">
+            <div class="item-title">Apple Watch Series 8</div>
+            <div class="item-price">$250 • Electronics • 3 days ago</div>
+          </div>
+          <div class="item-actions">
+            <button class="item-action">View</button>
+            <button class="item-action">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function checkAuth() {
+      if (localStorage.getItem('user-logged-in') !== 'true' || localStorage.getItem('user-role') !== 'buyer') {
+        window.location.href = 'buyer-signin.html';
+        return;
+      }
+
+      const userName = localStorage.getItem('user-name') || 'Buyer';
+      const userEmail = localStorage.getItem('user-email') || 'buyer@example.com';
+      document.getElementById('user-name').textContent = userName;
+      document.getElementById('user-email').textContent = userEmail;
+      document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
+    }
+
+    const themeToggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      themeToggle.textContent = '☀️ Light';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('user-logged-in');
+      localStorage.removeItem('user-role');
+      localStorage.removeItem('user-name');
+      localStorage.removeItem('user-email');
+      window.location.href = 'buyer-signin.html';
+    });
+
+    document.querySelectorAll('.item-action').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const action = btn.textContent.trim();
+        const item = btn.closest('.item');
+        if (action === 'Remove') {
+          item.remove();
+        } else {
+          alert(`${action}: ${item.querySelector('.item-title').textContent}`);
+        }
+      });
+    });
+
+    checkAuth();
+  </script>
+</body>
+</html>

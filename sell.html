@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sell on The Marketplace</title>
+  <meta name="description" content="Sell your items quickly and easily on The Marketplace." />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface-2: #E2E8F0;
+      --primary: #0F766E;
+      --primary-hover: #14B8A6;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #1F2937;
+      --text-muted: #64748B;
+      --muted: var(--text-muted);
+      --border: #E2E8F0;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --muted: var(--text-muted);
+      --border: #475569;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .nav-links a:nth-last-child(-n+2) {
+      font-size: 0.95rem;
+      padding: 4px 4px;
+    }
+
+    .nav-links a:nth-last-child(2),
+    .nav-links a:last-child {
+      padding: 4px 4px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .section {
+      padding: 72px 32px 40px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 4vw, 3.7rem);
+      line-height: 1;
+    }
+
+    .page-header p {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .steps-grid,
+    .benefits-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 34px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      min-height: 220px;
+    }
+
+    .card span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+      background: #eff6ff;
+      color: var(--primary);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 1.15rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .highlight {
+      margin: 64px 0 0;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 2fr 1fr;
+      align-items: center;
+    }
+
+    .highlight img {
+      border-radius: 28px;
+      height: 100%;
+      object-fit: cover;
+      min-height: 340px;
+    }
+
+    .highlight-copy h2 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .highlight-copy p {
+      margin: 18px 0 24px;
+      color: var(--muted);
+      max-width: 560px;
+    }
+
+    .footer {
+      padding: 40px 32px;
+      display: grid;
+      gap: 26px;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .footer-grid h4 {
+      margin-bottom: 14px;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .footer-grid a,
+    .footer p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .page-header,
+      .highlight,
+      .steps-grid,
+      .benefits-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-header {
+        gap: 24px;
+      }
+
+      .highlight img {
+        min-height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="logo" href="index.html">The Marketplace</a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="sell.html">Sell</a>
+      <a href="post-free-ad.html">Post free ad</a>
+      <a href="sign-in.html">Sign in</a>
+      <a href="register.html">Register</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="button secondary" href="index.html">Browse</a>
+      <a class="button primary" href="post-free-ad.html">Post free ad</a>
+      <button class="theme-toggle" type="button">🌙 Dark</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="page-header">
+        <div>
+          <p style="color: var(--primary); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 16px;">Ready to sell?</p>
+          <h1>List your item in minutes and reach local buyers right away.</h1>
+          <p>Sell furniture, electronics, vehicles, services, and more with a simple posting process. Our platform connects you with shoppers near you and makes it easy to manage leads.</p>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5d7?auto=format&fit=crop&w=900&q=80" alt="Selling items online" />
+        </div>
+      </div>
+
+      <div class="steps-grid">
+        <article class="card">
+          <span>1</span>
+          <h3>Create your listing</h3>
+          <p>Add a clear title, price, location, and item details so buyers can find what you’re selling.</p>
+        </article>
+        <article class="card">
+          <span>2</span>
+          <h3>Upload photos</h3>
+          <p>Share photos that show the condition and features of the item so buyers feel confident.</p>
+        </article>
+        <article class="card">
+          <span>3</span>
+          <h3>Connect with buyers</h3>
+          <p>Respond to messages and negotiate safely. Arrange pickup or delivery once you agree on a price.</p>
+        </article>
+      </div>
+
+      <div class="highlight">
+        <div class="highlight-copy">
+          <h2>Sell faster with a strong listing</h2>
+          <p>Add accurate descriptions, a fair price, and multiple photos to stand out. Keep your contact details up to date and answer buyer questions promptly.</p>
+          <a class="button primary" href="post-free-ad.html">Post free ad</a>
+        </div>
+        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80" alt="Marketplace listing example" />
+      </div>
+
+      <div class="benefits-grid">
+        <article class="card">
+          <span>📈</span>
+          <h3>More exposure</h3>
+          <p>Your ad reaches local buyers and people searching for nearby deals.</p>
+        </article>
+        <article class="card">
+          <span>⚡</span>
+          <h3>Fast process</h3>
+          <p>List your item in less than five minutes and start receiving inquiries immediately.</p>
+        </article>
+        <article class="card">
+          <span>🔒</span>
+          <h3>Safe selling tips</h3>
+          <p>Use our platform to keep communication organized and share only the details needed for a sale.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h4>The Marketplace</h4>
+        <p>Local classifieds for buying and selling goods, vehicles, services, and more.</p>
+      </div>
+      <div>
+        <h4>Pages</h4>
+        <a href="index.html">Home</a>
+        <a href="sell.html">Sell</a>
+        <a href="post-free-ad.html">Post free ad</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="#">Help center</a>
+        <a href="#">Safety tips</a>
+        <a href="#">Contact us</a>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <a href="#">Facebook</a>
+        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+    <p>© 2026 The Marketplace. All rights reserved.</p>
+  </footer>
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const button = document.querySelector('.theme-toggle');
+      const savedTheme = localStorage.getItem('theme');
+      const preferred = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const setTheme = theme => {
+        root.dataset.theme = theme;
+        localStorage.setItem('theme', theme);
+        if (!button) return;
+        button.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+        button.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+      };
+      setTheme(preferred);
+      if (button) {
+        button.addEventListener('click', function() {
+          setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

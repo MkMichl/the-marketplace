@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | The Marketplace</title>
+  <meta name="description" content="Admin dashboard for managing The Marketplace." />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface-2: #E2E8F0;
+      --primary: #0F766E;
+      --primary-hover: #14B8A6;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #1F2937;
+      --text-muted: #64748B;
+      --muted: var(--text-muted);
+      --border: #E2E8F0;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --info: #3B82F6;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface-2: #334155;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --primary-soft: rgba(20, 184, 166, 0.12);
+      --accent: #F59E0B;
+      --accent-hover: #FBBF24;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --muted: var(--text-muted);
+      --border: #475569;
+      --shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --info: #3B82F6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .logo-admin {
+      color: var(--danger);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 8px;
+      padding: 2px 8px;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      border-left: 1px solid var(--border);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .logout-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background: #DC2626;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    .page-header {
+      margin-bottom: 40px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 2.2rem;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .stat-trend {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .stat-trend.up {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .stat-trend.down {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .card h2 {
+      margin: 0 0 20px;
+      font-size: 1.3rem;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: var(--surface-2);
+    }
+
+    th {
+      text-align: left;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    tr:hover {
+      background: var(--primary-soft);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .badge.active {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .badge.inactive {
+      background: rgba(107, 114, 128, 0.1);
+      color: var(--muted);
+    }
+
+    .badge.pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--surface-2);
+    }
+
+    .action-btn.delete:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .activity-icon.success {
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .activity-icon.warning {
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .activity-text {
+      flex: 1;
+    }
+
+    .activity-text p {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .activity-time {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: space-between;
+        margin-left: 0;
+      }
+
+      .user-info {
+        border-left: none;
+        border-top: 1px solid var(--border);
+        padding: 12px 0 0;
+      }
+
+      table {
+        font-size: 0.85rem;
+      }
+
+      th, td {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html">The Marketplace <span class="logo-admin">ADMIN</span></a>
+      <div class="header-actions">
+        <button class="theme-toggle" type="button">🌙 Dark</button>
+        <div class="user-info">
+          <div class="user-avatar" id="user-avatar">A</div>
+          <div>
+            <div style="font-weight: 600;">Admin User</div>
+            <div style="font-size: 0.85rem; color: var(--muted);" id="admin-email-display">admin@marketplace.com</div>
+          </div>
+          <button class="logout-btn" id="logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Dashboard</h1>
+      <p>Welcome to The Marketplace Admin Panel. Here's an overview of your marketplace.</p>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Listings</div>
+        <div class="stat-value">2,847</div>
+        <span class="stat-trend up">↑ 12.5% this month</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Users</div>
+        <div class="stat-value">1,234</div>
+        <span class="stat-trend up">↑ 8.2% this month</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pending Listings</div>
+        <div class="stat-value">42</div>
+        <span class="stat-trend down">↓ 5 from yesterday</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Revenue</div>
+        <div class="stat-value">$24,580</div>
+        <span class="stat-trend up">↑ 18.7% this month</span>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Recent Listings -->
+      <div class="card">
+        <h2>Recent Listings</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Seller</th>
+                <th>Status</th>
+                <th>Posted</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Vintage Leather Sofa</td>
+                <td>John Smith</td>
+                <td><span class="badge active">Active</span></td>
+                <td>2 hours ago</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>iPhone 14 Pro Max</td>
+                <td>Sarah Johnson</td>
+                <td><span class="badge pending">Pending</span></td>
+                <td>1 day ago</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">Review</button>
+                    <button class="action-btn delete">Reject</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Mountain Bike</td>
+                <td>Mike Davis</td>
+                <td><span class="badge active">Active</span></td>
+                <td>3 days ago</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Apartment Rental</td>
+                <td>Emily Brown</td>
+                <td><span class="badge inactive">Inactive</span></td>
+                <td>1 week ago</td>
+                <td>
+                  <div class="actions">
+                    <button class="action-btn">View</button>
+                    <button class="action-btn delete">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Activity Feed -->
+      <div class="card">
+        <h2>Recent Activity</h2>
+        <div class="activity-item">
+          <div class="activity-icon success">📝</div>
+          <div class="activity-text">
+            <p>New listing posted</p>
+            <div class="activity-time">5 minutes ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon success">👤</div>
+          <div class="activity-text">
+            <p>New user registered</p>
+            <div class="activity-time">32 minutes ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon warning">⚠️</div>
+          <div class="activity-text">
+            <p>Flagged content reported</p>
+            <div class="activity-time">1 hour ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon success">💰</div>
+          <div class="activity-text">
+            <p>Payment processed</p>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon warning">⚠️</div>
+          <div class="activity-text">
+            <p>Suspicious activity detected</p>
+            <div class="activity-time">3 hours ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Management -->
+    <div class="card" style="margin-top: 24px;">
+      <h2>User Management</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Join Date</th>
+              <th>Listings</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Smith</td>
+              <td>john@example.com</td>
+              <td>Jan 15, 2024</td>
+              <td>5</td>
+              <td><span class="badge active">Active</span></td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn">Ban</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Sarah Johnson</td>
+              <td>sarah@example.com</td>
+              <td>Feb 3, 2024</td>
+              <td>8</td>
+              <td><span class="badge active">Active</span></td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn">Ban</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Mike Davis</td>
+              <td>mike@example.com</td>
+              <td>Dec 10, 2023</td>
+              <td>3</td>
+              <td><span class="badge inactive">Inactive</span></td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn delete">Remove</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Check if user is logged in
+    function checkAdminAuth() {
+      if (localStorage.getItem('admin-logged-in') !== 'true') {
+        window.location.href = 'admin-login.html';
+        return;
+      }
+
+      // Display admin email
+      const adminEmail = localStorage.getItem('admin-email') || 'admin@marketplace.com';
+      document.getElementById('admin-email-display').textContent = adminEmail;
+      document.getElementById('user-avatar').textContent = adminEmail.charAt(0).toUpperCase();
+    }
+
+    // Theme toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    const html = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      themeToggle.textContent = '☀️ Light';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggle.textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    });
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('admin-logged-in');
+      localStorage.removeItem('admin-email');
+      window.location.href = 'admin-login.html';
+    });
+
+    // Button interactions
+    document.querySelectorAll('.action-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const action = btn.textContent.trim();
+        const row = btn.closest('tr');
+        if (action === 'Delete' || action === 'Reject' || action === 'Remove') {
+          alert(`Deleted: ${row.cells[0].textContent}`);
+          row.remove();
+        } else {
+          alert(`${action} action on: ${row.cells[0].textContent}`);
+        }
+      });
+    });
+
+    // Initialize
+    checkAdminAuth();
+  </script>
+</body>
+</html>
