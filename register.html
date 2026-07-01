@@ -186,8 +186,44 @@
     }
 
     @media (max-width: 860px) {
+      body {
+        overflow-x: hidden;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 18px 20px;
+      }
+
+      .nav-links {
+        justify-content: center;
+      }
+
+      .page-container {
+        padding: 32px 20px 24px;
+      }
+
       .hero {
         grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .auth-card {
+        padding: 24px;
+        border-radius: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-copy h1 {
+        font-size: 1.9rem;
       }
     }
   </style>
