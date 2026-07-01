@@ -241,6 +241,21 @@
     }
 
     @media (max-width: 900px) {
+      body {
+        overflow-x: hidden;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 18px 20px;
+      }
+
+      .nav-links,
+      .nav-actions {
+        justify-content: center;
+      }
+
       .page-header,
       .highlight,
       .steps-grid,
@@ -249,12 +264,37 @@
         grid-template-columns: 1fr;
       }
 
+      .section {
+        padding: 40px 20px 24px;
+      }
+
       .page-header {
         gap: 24px;
       }
 
       .highlight img {
         min-height: 220px;
+      }
+
+      .card {
+        padding: 22px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links,
+      .nav-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button {
+        width: 100%;
+        text-align: center;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
       }
     }
   </style>
