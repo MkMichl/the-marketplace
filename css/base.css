@@ -8,7 +8,10 @@
   font-variation-settings:
     "wdth" 100; */
 }
-
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
 .material-symbols-outlined {
   cursor: pointer;
   color: var(--text);
@@ -817,7 +820,12 @@ footer {
 }
 
 @media (max-width: 480px) {
-  .nav-actions .secondary {
+  .nav-actions .primary {
     display: none;
+  }
+  .nav-actions .secondary.button {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 12px 30px rgba(15, 99, 255, 0.18);
   }
 }
