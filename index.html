@@ -9,53 +9,31 @@
       content="The Marketplace is a modern classifieds website for buying and selling local products and services."
     />
     <link rel="stylesheet" href="css/base.css" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_forward,close,dark_mode,light_mode,menu"
-    />
   </head>
   <body>
     <header>
-      <a class="logo" href="#">
-        <span class="logo-full">The Marketplace </span>
-        <span class="logo-abbr">TM</span>
-      </a>
-      <div class="nav-body mini-close">
-        <nav class="nav-links">
-          <a href="#categories">Categories</a>
-          <a href="#featured">Featured</a>
-          <a href="#how-it-works">How it works</a>
-          <a href="buyer-signin.html">Buy</a>
-          <a
-            href="seller-signin.html"
-            style="color: var(--primary); font-weight: 700"
-            >Sell</a
-          >
-          <a href="register.html">Register</a>
-          <a
-            class="hidden"
-            href="admin-login.html"
-            style="color: var(--danger); font-weight: 700"
-            >Admin</a
-          >
-        </nav>
-      </div>
+      <a class="logo" href="#">The Marketplace</a>
+      <nav class="nav-links">
+        <a href="#categories">Categories</a>
+        <a href="#featured">Featured</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="buyer-signin.html">Buy</a>
+        <a
+          href="seller-signin.html"
+          style="color: var(--primary); font-weight: 700"
+          >Sell</a
+        >
+        <a href="register.html">Register</a>
+        <a
+          href="admin-login.html"
+          style="color: var(--danger); font-weight: 700"
+          >Admin</a
+        >
+      </nav>
       <div class="nav-actions">
         <a class="button secondary" href="sell.html">Sell</a>
         <a class="button primary" href="post-free-ad.html">Post free ad</a>
-
-        <div class="nav_controls cons">
-          <span class="material-symbols-outlined menu" onclick="toggleMenu()">
-            menu
-          </span>
-          <span class="material-symbols-outlined close"> close </span>
-        </div>
-        <button
-          class="theme-toggle button material-symbols-outlined"
-          type="button"
-        >
-          dark_mode
-        </button>
+        <button class="theme-toggle button" type="button">🌙 Dark</button>
       </div>
     </header>
 
@@ -209,10 +187,7 @@
             </p>
             <h2>Top deals in your area</h2>
           </div>
-          <a href="post-free-ad.html" class="button secondary_a"
-            >Post your ad
-            <span class="material-symbols-outlined"> arrow_forward </span></a
-          >
+          <a href="post-free-ad.html">Post your ad</a>
         </div>
         <div
           class="listings-grid"
@@ -376,7 +351,7 @@
           root.dataset.theme = theme;
           localStorage.setItem("theme", theme);
           if (!button) return;
-          button.textContent = theme === "dark" ? "light_mode" : "dark_mode";
+          button.textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
           button.setAttribute(
             "aria-label",
             `Switch to ${theme === "dark" ? "light" : "dark"} mode`,
@@ -389,20 +364,6 @@
           });
         }
       })();
-      function toggleMenu() {
-        const navBody = document.querySelector(".nav-body.mini-close");
-        const menuIcon = document.querySelector(".nav_controls .menu");
-        // const closeIcon = document.querySelector(".nav_controls .close");
-        if (navBody.style.visibility === "visible") {
-          navBody.style.visibility = "hidden";
-          navBody.style.opacity = "0";
-          menuIcon.innerHTML = "menu";
-        } else {
-          navBody.style.visibility = "visible";
-          navBody.style.opacity = "1";
-          menuIcon.innerHTML = "close";
-        }
-      }
     </script>
   </body>
 </html>
