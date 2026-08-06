@@ -1,11 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Register | The Marketplace</title>
-  <meta name="description" content="Create a new account on The Marketplace." />
-  <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | The Marketplace</title>
+    <meta
+      name="description"
+      content="Create a new account on The Marketplace."
+    />
+    <link rel="stylesheet" href="css/base.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_forward,close,dark_mode,light_mode,menu"
+    />
+    <!-- <style>
     :root {
       --bg: #FFFFFF;
       --surface: #F8FAFC;
@@ -226,75 +234,128 @@
         font-size: 1.9rem;
       }
     }
-  </style>
-</head>
-<body>
-  <header>
-    <a class="logo" href="index.html">The Marketplace</a>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="sell.html">Sell</a>
-      <a href="post-free-ad.html">Post free ad</a>
-      <a href="sign-in.html">Sign in</a>
-      <a href="register.html">Register</a>
-    </nav>
-    <button class="theme-toggle" type="button">🌙 Dark</button>
-  </header>
-
-  <main class="page-container">
-    <section class="hero">
-      <div class="hero-copy">
-        <p style="color: var(--primary); font-weight: 700; margin: 0 0 14px;">Join The Marketplace</p>
-        <h1>Create your account and start posting ads.</h1>
-        <p>Register now to manage your listings, save favorite searches, and message buyers directly from your account.</p>
+  </style> -->
+  </head>
+  <body>
+    <header>
+      <a class="logo logins" href="index.html">The Marketplace</a>
+      <div class="nav-body mini-close">
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="sell.html">Sell</a>
+          <a href="post-free-ad.html">Post free ad</a>
+          <a href="sign-in.html">Sign in</a>
+          <a href="register.html">Register</a>
+        </nav>
       </div>
-      <div class="auth-card">
-        <h2>Create an account</h2>
-        <label for="fullname">Full name</label>
-        <input id="fullname" name="fullname" type="text" placeholder="Your full name" />
-
-        <label for="email">Email address</label>
-        <input id="email" name="email" type="email" placeholder="you@example.com" />
-
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" placeholder="Choose a strong password" />
-
-        <label for="confirm-password">Confirm password</label>
-        <input id="confirm-password" name="confirm-password" type="password" placeholder="Re-enter your password" />
-
-        <label for="account-type">Account type</label>
-        <select id="account-type" name="account-type">
-          <option>Buyer</option>
-          <option>Seller</option>
-          <option>Both</option>
-        </select>
-
-        <button type="button">Create account</button>
-
-        <p class="bottom-note">Already have an account? <a href="sign-in.html" style="color: var(--primary); font-weight: 600;">Sign in</a>.</p>
+      <div class="nav_controls cons">
+        <span class="material-symbols-outlined menu" onclick="toggleMenu()">
+          menu
+        </span>
+        <!-- <span class="material-symbols-outlined close"> close </span> -->
       </div>
-    </section>
-  </main>
-  <script>
-    (function() {
-      const root = document.documentElement;
-      const button = document.querySelector('.theme-toggle');
-      const savedTheme = localStorage.getItem('theme');
-      const preferred = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      const setTheme = theme => {
-        root.dataset.theme = theme;
-        localStorage.setItem('theme', theme);
-        if (!button) return;
-        button.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
-        button.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
-      };
-      setTheme(preferred);
-      if (button) {
-        button.addEventListener('click', function() {
-          setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
-        });
-      }
-    })();
-  </script>
-</body>
+      <button
+        class="theme-toggle button material-symbols-outlined"
+        type="button"
+      >
+        dark_mode
+      </button>
+    </header>
+
+    <main class="page-container">
+      <section class="hero">
+        <div class="hero-copy">
+          <p style="color: var(--primary); font-weight: 700; margin: 0 0 14px">
+            Join The Marketplace
+          </p>
+          <h1 class="reg1">Create your account and start posting ads.</h1>
+          <p>
+            Register now to manage your listings, save favorite searches, and
+            message buyers directly from your account.
+          </p>
+        </div>
+        <div class="auth-card reg">
+          <h2>Create an account</h2>
+          <label for="fullname">Full name</label>
+          <input
+            id="fullname"
+            name="fullname"
+            type="text"
+            placeholder="Your full name"
+          />
+
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+          />
+
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Choose a strong password"
+          />
+
+          <label for="confirm-password">Confirm password</label>
+          <input
+            id="confirm-password"
+            name="confirm-password"
+            type="password"
+            placeholder="Re-enter your password"
+          />
+
+          <label for="account-type">Account type</label>
+          <select id="account-type" name="account-type">
+            <option>Buyer</option>
+            <option>Seller</option>
+            <option>Both</option>
+          </select>
+
+          <button type="button">Create account</button>
+
+          <p class="bottom-note">
+            Already have an account?
+            <a
+              href="sign-in.html"
+              style="color: var(--primary); font-weight: 600"
+              >Sign in</a
+            >.
+          </p>
+        </div>
+      </section>
+    </main>
+    <script src="js/base.js"></script>
+    <!-- <script>
+      (function () {
+        const root = document.documentElement;
+        const button = document.querySelector(".theme-toggle");
+        const savedTheme = localStorage.getItem("theme");
+        const preferred =
+          savedTheme ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+        const setTheme = (theme) => {
+          root.dataset.theme = theme;
+          localStorage.setItem("theme", theme);
+          if (!button) return;
+          button.textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+          button.setAttribute(
+            "aria-label",
+            `Switch to ${theme === "dark" ? "light" : "dark"} mode`,
+          );
+        };
+        setTheme(preferred);
+        if (button) {
+          button.addEventListener("click", function () {
+            setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+          });
+        }
+      })();
+    </script> -->
+  </body>
 </html>

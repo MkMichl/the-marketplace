@@ -275,6 +275,9 @@ header {
   margin: 0 0 18px;
   line-height: 0.95;
 }
+.hero-copy > h1.reg1 {
+  color: var(--accent);
+}
 
 .hero-copy p {
   margin: 0 0 28px;
@@ -752,6 +755,7 @@ footer {
   .hero-copy h1 {
     font-size: clamp(2.1rem, 7vw, 2.8rem);
     line-height: 1.05;
+    color: var(--accent);
   }
 
   .hero-copy p {
@@ -860,15 +864,18 @@ footer {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 28px;
-  padding: 48px;
+  padding: 48px 24px;
   box-shadow: var(--shadow);
   max-width: 420px;
   width: 100%;
 
   @media (max-width: 720px) {
-    border: none;
-    background: transparent;
-    box-shadow: none;
+    &:not(.reg) {
+      padding-top: 96px;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+    }
   }
 }
 
@@ -886,6 +893,8 @@ footer {
 .auth-card h1 {
   margin: 0 0 4px;
   font-size: 2rem;
+  line-height: 1;
+  color: var(--accent);
 }
 
 .auth-card p {
@@ -900,17 +909,21 @@ footer {
 
 .auth-card label {
   display: block;
-  margin-bottom: 8px;
+  margin-top: 12px;
+  margin-bottom: 4px;
   font-weight: 600;
   color: var(--text);
   font-size: 0.95rem;
+  font-size: small;
 }
 
-.auth-card input {
+.auth-card input,
+select#account-type {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 14px 16px;
+  /* border-radius: 966px; */
+  padding: 14px;
   font-size: 1rem;
   background: var(--bg);
   color: var(--text);
@@ -918,7 +931,8 @@ footer {
   transition: border-color 0.2s ease;
 }
 
-.auth-card input:focus {
+.auth-card input:focus,
+select#account-type:focus {
   border-color: var(--primary);
 }
 
@@ -955,6 +969,8 @@ footer {
   transition:
     background 0.2s ease,
     transform 0.1s ease;
+
+  border-radius: 999px;
 }
 
 .auth-card button:hover {
@@ -976,13 +992,47 @@ footer {
 .error-message.show {
   display: block;
 }
+.sec_but,
+.sec_but.back-button {
+  /* background-color: var(--surface-2); */
+  /* border: none; */
+}
+select#account-type {
+  width: 100%;
+  display: block;
+  padding: 14px;
+  margin-bottom: 24px;
+  position: relative;
+  appearance: none;
+
+  &::after {
+    display: block;
+    position: absolute;
+    z-index: 29;
+    content: "";
+    height: 24px;
+    width: 24px;
+    background-color: #831515;
+    left: 14px;
+    top: 14px;
+  }
+}
+
+p.bottom-note {
+  text-align: center;
+  margin-top: 8px;
+  display: block;
+}
 
 .back-button {
+  display: inline-block;
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text);
   padding: 8px 16px;
   border-radius: 8px;
+  border-radius: 999px;
+  text-align: center;
   cursor: pointer;
   font-weight: 600;
   margin-top: 16px;

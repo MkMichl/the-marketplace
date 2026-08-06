@@ -1,11 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buyer Sign In | The Marketplace</title>
-  <meta name="description" content="Sign in as a buyer on The Marketplace." />
-  <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buyer Sign In | The Marketplace</title>
+    <meta name="description" content="Sign in as a buyer on The Marketplace." />
+    <link rel="stylesheet" href="css/base.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_forward,close,dark_mode,light_mode,menu"
+    />
+    <!-- <style>
     :root {
       --bg: #FFFFFF;
       --surface: #F8FAFC;
@@ -361,125 +366,152 @@
         align-items: flex-start;
       }
     }
-  </style>
-</head>
-<body>
-  <header>
-    <a class="logo" href="index.html">The Marketplace</a>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="seller-signin.html">Seller Login</a>
-      <a href="admin-login.html">Admin</a>
-    </nav>
-    <button class="theme-toggle" type="button">🌙 Dark</button>
-  </header>
+  </style> -->
+  </head>
+  <body>
+    <header>
+      <a class="logo logins" href="index.html">The Marketplace</a>
+      <div class="nav-body mini-close">
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="seller-signin.html">Seller Login</a>
+          <a href="admin-login.html">Admin</a>
+        </nav>
+      </div>
+      <div class="nav_controls cons">
+        <span class="material-symbols-outlined menu" onclick="toggleMenu()">
+          menu
+        </span>
+        <!-- <span class="material-symbols-outlined close"> close </span> -->
+      </div>
+      <button
+        class="theme-toggle button material-symbols-outlined"
+        type="button"
+      >
+        dark_mode
+      </button>
+    </header>
 
-  <main class="login-container">
-    <div class="auth-card">
-      <div class="auth-badge">🛍️ Buyer Portal</div>
-      <h1>Buyer Login</h1>
-      <p>Access your purchases, saved items, and messages.</p>
+    <main class="login-container">
+      <div class="auth-card">
+        <!-- <div class="auth-badge">🛍️ Buyer Portal</div> -->
+        <!-- <h1>Buyer Login</h1> -->
+        <h1>
+          Welcome Back! <br />
+          Customer
+        </h1>
+        <p>Access your purchases, saved items, and messages.</p>
 
-      <form id="signin-form">
-        <div class="form-group">
-          <label for="signin-email">Email or Phone Number</label>
-          <input
-            type="text"
-            id="signin-email"
-            name="email"
-            placeholder="you@example.com or (123) 456-7890"
-            required
-          />
-          <div class="error-message" id="email-error"></div>
-        </div>
+        <form id="signin-form">
+          <div class="form-group">
+            <label for="signin-email">Email or Phone Number</label>
+            <input
+              type="text"
+              id="signin-email"
+              name="email"
+              placeholder="you@example.com or (123) 456-7890"
+              required
+            />
+            <div class="error-message" id="email-error"></div>
+          </div>
 
-        <div class="form-group">
-          <label for="signin-password">Password</label>
-          <input
-            type="password"
-            id="signin-password"
-            name="password"
-            placeholder="••••••••"
-            required
-          />
-          <div class="error-message" id="password-error"></div>
-        </div>
+          <div class="form-group">
+            <label for="signin-password">Password</label>
+            <input
+              type="password"
+              id="signin-password"
+              name="password"
+              placeholder="••••••••"
+              required
+            />
+            <div class="error-message" id="password-error"></div>
+          </div>
 
-        <div class="checkbox-group">
-          <input type="checkbox" id="remember" name="remember" />
-          <label for="remember">Remember me</label>
-        </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="remember" name="remember" />
+            <label for="remember">Remember me</label>
+          </div>
 
-        <button type="submit" id="signin-button">Sign In as Buyer</button>
+          <button type="submit" id="signin-button">Sign In as Buyer</button>
 
-        <a href="seller-signin.html" class="back-button">📦 Switch to Seller Login</a>
+          <a href="seller-signin.html" class="back-button"
+            >📦 Sign in as Customer</a
+          >
 
-        <div class="bottom-links">
-          <p>Don't have an account? <a href="register.html">Create one</a></p>
-        </div>
-      </form>
-    </div>
-  </main>
+          <div class="bottom-links">
+            <p>Don't have an account? <a href="register.html">Create one</a></p>
+          </div>
+        </form>
+      </div>
+    </main>
 
-  <script>
-    // Theme toggle
-    const themeToggle = document.querySelector('.theme-toggle');
-    const html = document.documentElement;
+    <script src="js/base.js"></script>
+    <!-- <script>
+      // Theme toggle
+      const themeToggle = document.querySelector(".theme-toggle");
+      const html = document.documentElement;
 
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    if (savedTheme === 'dark') {
-      html.setAttribute('data-theme', 'dark');
-      themeToggle.textContent = '☀️ Light';
-    }
-
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = html.getAttribute('data-theme') || 'light';
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      themeToggle.textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
-    });
-
-    // Helper functions
-    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isValidPhone = (phone) => /^[\d\s\-\(\)\+]{10,}$/.test(phone.replace(/\s/g, '')) && /\d/.test(phone);
-
-    // Form submission
-    document.getElementById('signin-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      document.getElementById('email-error').classList.remove('show');
-      document.getElementById('password-error').classList.remove('show');
-
-      const email = document.getElementById('signin-email').value.trim();
-      const password = document.getElementById('signin-password').value.trim();
-
-      let hasError = false;
-
-      if (!isValidEmail(email) && !isValidPhone(email)) {
-        document.getElementById('email-error').textContent = 'Please enter a valid email or phone number';
-        document.getElementById('email-error').classList.add('show');
-        hasError = true;
+      const savedTheme = localStorage.getItem("theme") || "light";
+      if (savedTheme === "dark") {
+        html.setAttribute("data-theme", "dark");
+        themeToggle.textContent = "☀️ Light";
       }
 
-      if (password.length < 6) {
-        document.getElementById('password-error').textContent = 'Password must be at least 6 characters';
-        document.getElementById('password-error').classList.add('show');
-        hasError = true;
-      }
+      themeToggle.addEventListener("click", () => {
+        const currentTheme = html.getAttribute("data-theme") || "light";
+        const newTheme = currentTheme === "light" ? "dark" : "light";
+        html.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        themeToggle.textContent = newTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+      });
 
-      if (!hasError) {
-        localStorage.setItem('user-logged-in', 'true');
-        localStorage.setItem('user-role', 'buyer');
-        localStorage.setItem('user-email', email);
-        const userName = isValidEmail(email) 
-          ? email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1)
-          : 'User';
-        localStorage.setItem('user-name', userName);
+      // Helper functions
+      const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const isValidPhone = (phone) =>
+        /^[\d\s\-\(\)\+]{10,}$/.test(phone.replace(/\s/g, "")) &&
+        /\d/.test(phone);
 
-        window.location.href = 'buyer-dashboard.html';
-      }
-    });
-  </script>
-</body>
+      // Form submission
+      document.getElementById("signin-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        document.getElementById("email-error").classList.remove("show");
+        document.getElementById("password-error").classList.remove("show");
+
+        const email = document.getElementById("signin-email").value.trim();
+        const password = document
+          .getElementById("signin-password")
+          .value.trim();
+
+        let hasError = false;
+
+        if (!isValidEmail(email) && !isValidPhone(email)) {
+          document.getElementById("email-error").textContent =
+            "Please enter a valid email or phone number";
+          document.getElementById("email-error").classList.add("show");
+          hasError = true;
+        }
+
+        if (password.length < 6) {
+          document.getElementById("password-error").textContent =
+            "Password must be at least 6 characters";
+          document.getElementById("password-error").classList.add("show");
+          hasError = true;
+        }
+
+        if (!hasError) {
+          localStorage.setItem("user-logged-in", "true");
+          localStorage.setItem("user-role", "buyer");
+          localStorage.setItem("user-email", email);
+          const userName = isValidEmail(email)
+            ? email.split("@")[0].charAt(0).toUpperCase() +
+              email.split("@")[0].slice(1)
+            : "User";
+          localStorage.setItem("user-name", userName);
+
+          window.location.href = "buyer-dashboard.html";
+        }
+      });
+    </script> -->
+  </body>
 </html>
